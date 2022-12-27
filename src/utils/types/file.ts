@@ -4,7 +4,15 @@ export enum FileTypes {
   DOCUMENT = "document",
   AUDIO = "audio",
 }
+// export enum saveDataFilter {
+//   SELLER = "sellers",
+//   PRODUCT = "products",
+//   ORDER = "orders",
+// }
 
+export interface saveDataFilter {
+  type: string;
+}
 export interface InitCreateFileData {
   key: string;
   type: FileTypes;

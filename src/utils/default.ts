@@ -1,6 +1,6 @@
-import { Customers, Sellers, Users } from "../models";
 import { Response, Request, NextFunction } from "express";
 import { ObjectSchema, ValidationOptions } from "joi";
+import { userData } from "./types";
 
 export type Controller = (req: Request, res: Response) => Promise<Response>;
 
@@ -37,10 +37,8 @@ export interface ServiceParams<T = unknown, F = unknown> {
   reference?: string;
   query?: string;
   scope?: string;
-  file?: Express.Multer.File & Express.MulterS3.File;
-  user?: Users | null;
-  seller?: Sellers | null;
-  customer?: Customers | null;
+  file?: Express.Multer.File;
+  user?: userData | null;
   token?: string;
 }
 
@@ -67,12 +65,6 @@ export interface ApiResponse<T> {
   success: boolean;
   message: string;
   data?: T;
-}
-
-export interface JwtGenerationPayload {
-  _id: string;
-  email: string;
-  phone: string;
 }
 
 export interface ModuleResponse<T> {

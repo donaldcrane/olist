@@ -1,29 +1,19 @@
 import { Router as expRouter } from "express";
 import {
-  saveCustomer,
-  saveSeller,
-  loginUser,
-  recoverAccount,
-  resendToken,
-  resetPassword,
-  verifyAccount,
-  createLocation,
-  createFile,
+  getOrderItems,
+  deleteOrderItems,
+  updateAccount,
+  createCollection,
 } from "../controllers";
 import { isAuthenticated, uploader } from "../middlewares";
 
 const router = expRouter();
 
-router.post("/login", loginUser);
-router.post("/resend", resendToken);
-router.post("/customer/register", saveCustomer);
-router.post("/seller/register", saveSeller);
+router.get("/login", isAuthenticated, getOrderItems);
 
-router.patch("/verify", verifyAccount);
+router.patch("/verify", isAuthenticated, updateAccount);
 
-router.patch("/recoverAccount", recoverAccount);
-router.patch("/resetPassword", resetPassword);
-router.patch("/location", [isAuthenticated], createLocation);
-router.patch("/upload", uploader, [isAuthenticated], createFile);
+router.delete("/recoverAccount", isAuthenticated, deleteOrderItems);
+router.delete("/recoverAccount", uploader, createCollection);
 
 export default router;

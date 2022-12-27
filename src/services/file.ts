@@ -1,15 +1,27 @@
-import { Service, response, FileFilterData } from "../utils";
+import { Service, response, saveDataFilter, IFile } from "../utils";
 import { service } from "../core";
-import { saveUploadedFile } from "../middlewares";
+import { addOrders, addSellers, addProducts } from "../repos";
+import fs from "fs";
 
-export const saveFile: Service = ({ file, filters }) =>
+export const saveFile: Service<unknown, unknown, saveDataFilter> = ({
+  file,
+  filters,
+}) =>
   service(async () => {
-    const { type } = filters as FileFilterData;
-    const { data: documentFile, error: fileError } = await saveUploadedFile(
-      file,
-      type
-    );
-    if (fileError || !documentFile?.url) return response.serverError(fileError);
+    const { type } = filters as saveDataFilter;
 
-    return response.success(documentFile);
+    const data = fs as IFile;
+    file
+      .toString()
+      .split("\n")
+      .map((e) => e.trim())
+      .map((e) => e.split(",").map((e) => e.trim()));
+
+    await (type === "orders"
+      ? addOrders(data)
+      : type === "sellers"
+      ? addSellers(data)
+      : addProducts(data));
+
+    return response.success();
   });

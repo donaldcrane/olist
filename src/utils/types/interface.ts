@@ -1,85 +1,35 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import { Customers, Sellers, Users } from "../../models";
 declare global {
   namespace Express {
-    interface User extends Users {}
+    interface User extends userData {}
     interface Request extends CustomRequest {}
   }
 }
 
 export interface CustomRequest {
-  user: IUser | null;
+  user: unknown | null;
   file: object;
   params: object;
   query: object;
   path: object;
-  token?: string | null;
-  customer?: Customers | null;
-  seller?: Sellers | null;
-  authOptional?: boolean;
 }
-export interface IUser {
-  id: number;
-  email: string;
-  password: string;
-  username: string;
-  phone: string;
-  role?: string;
-  googleId?: string;
-  facebookId?: string;
-  twitterId?: string;
-  appleId?: string;
-  verified: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+export interface userData {
+  seller_id?: string;
+  password?: string;
+}
+export interface AccountData {
+  city: string;
+  state: string;
 }
 
-export interface ISeller {
-  id: number;
-  userId: number;
-  firstName: string;
-  lastName: string;
-  photo?: string;
-  dob?: string;
-  gender?: string;
-  businessName: string;
-  businessType: string;
-  location: string;
-  contact: string;
-  license: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+export interface filterItems {
+  sort: number;
+  page: number;
+  limit: number;
 }
 
-export interface ICustomer {
-  id: number;
-  userId: number;
-  firstName: string;
-  lastName: string;
-  photo?: string;
-  dob?: string;
-  gender?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-interface Person {
-  $search: string;
-}
-
-export interface IFilter {
-  verified?: string;
-  role?: string;
-  $text: Person;
-}
-
-export interface IOtp {
-  id?: string;
-  user: string;
-  token: number;
-  expired: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+export interface IData {
+  data?: string;
 }
 
 export interface ILogin {
@@ -123,23 +73,4 @@ export interface JwtPayload {
 
 export interface Error {
   message: string;
-}
-
-export interface IPlan {
-  id: string;
-  name: string;
-  duration: number;
-  price: number;
-  discount?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-export interface ITransaction {
-  amount: number;
-  status: string;
-  coach: string;
-  client: string;
-  type: string;
-  reference: string;
 }

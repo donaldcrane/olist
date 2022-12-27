@@ -17,13 +17,10 @@ export const controller = async <T = unknown, R = unknown, F = unknown>({
     filters: { ...req.query, ...(params.filters || {}) } as
       | F
       | { [key: string]: string },
-    file: req.file as Express.Multer.File & Express.MulterS3.File,
+    file: req.file as Express.Multer.File,
   };
 
   if (req.user) params.user = req.user;
-  if (req.token) params.token = req.token;
-  if (req.customer) params.customer = req.customer;
-  if (req.seller) params.seller = req.seller;
 
   params.pagination = {
     page: Number((params.filters as { [key: string]: string })?.page ?? 0),

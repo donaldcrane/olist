@@ -1,9 +1,4 @@
-import { Prisma } from "@prisma/client";
-import {
-  databaseConnectionError,
-  databaseError,
-  unknownDatabaseError,
-} from "../utils";
+import { unknownDatabaseError } from "../utils";
 
 export const repo = async <T = unknown>(
   func: () => Promise<T | undefined>
@@ -13,12 +8,8 @@ export const repo = async <T = unknown>(
   } catch (e: unknown) {
     console.error("database error");
 
-    let error = unknownDatabaseError;
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code.startsWith("P10")) error = databaseConnectionError;
-      else if (e.code.startsWith("P20")) error = databaseError;
-      console.error(e.message);
-    } else console.error(e);
+    const error = unknownDatabaseError;
+    console.error(error);
 
     return { error };
   }
