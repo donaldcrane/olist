@@ -6,10 +6,11 @@ export const repo = async <T = unknown>(
   try {
     return { data: await func() };
   } catch (e: unknown) {
-    console.error("database error");
+    console.log(e)
+    // console.error("database error");
 
     const error = unknownDatabaseError;
-    console.error(error);
+    // console.error(error);
 
     return { error };
   }

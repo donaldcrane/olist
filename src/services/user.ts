@@ -2,13 +2,13 @@ import {
   Service,
   response,
   notExistError,
-  AccountData,
   filterItems,
+  ISeller,
 } from "../utils";
 import { service } from "../core";
 import { deleteOrder, findOrders, updateSeller } from "../repos";
 
-export const updateSellerAccount: Service<AccountData> = ({
+export const updateSellerAccount: Service<ISeller> = ({
   user,
   validatedData,
 }) =>

@@ -9,11 +9,11 @@ import { isAuthenticated, uploader } from "../middlewares";
 
 const router = expRouter();
 
-router.get("/login", isAuthenticated, getOrderItems);
+router.get("/order_items", isAuthenticated, getOrderItems);
 
-router.patch("/verify", isAuthenticated, updateAccount);
+router.patch("/account", isAuthenticated, updateAccount);
 
-router.delete("/recoverAccount", isAuthenticated, deleteOrderItems);
-router.delete("/recoverAccount", uploader, createCollection);
+router.delete("/orders/:id", isAuthenticated, deleteOrderItems);
+router.post("/collection", uploader, createCollection);
 
 export default router;

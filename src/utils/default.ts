@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { ObjectSchema, ValidationOptions } from "joi";
-import { userData } from "./types";
+import { ISeller } from "./types";
 
 export type Controller = (req: Request, res: Response) => Promise<Response>;
 
@@ -38,7 +38,7 @@ export interface ServiceParams<T = unknown, F = unknown> {
   query?: string;
   scope?: string;
   file?: Express.Multer.File;
-  user?: userData | null;
+  user?: ISeller | null;
   token?: string;
 }
 

@@ -1,9 +1,8 @@
 import { repo } from "../core";
-import { AccountData, userData } from "../utils";
+import {  ISeller, IOrder, IProduct } from "../utils";
 import config from "../config";
 
 import { MongoClient } from "mongodb";
-// Replace the uri string with your connection string.
 const uri = config.MONGO_URL as string;
 const client = new MongoClient(uri);
 
@@ -11,9 +10,9 @@ const database = client.db("olist");
 
 const orders = database.collection("olist_order_items_dataset");
 const products = database.collection("olist_products_dataset");
-const sellers = database.collection("olist_sellers_dataset");
+const sellers = database.collection<ISeller>("olist_olist_sellers_dataset");
 
-export const updateSeller = (user: userData, data: AccountData) =>
+export const updateSeller = (user: ISeller, data: ISeller) =>
   repo(async () => await sellers.updateOne(user, data));
 
 export const findUser = (username: string, password: string) =>
@@ -25,7 +24,7 @@ export const findUser = (username: string, password: string) =>
   );
 
 export const findOrders = (
-  user: userData,
+  user: ISeller,
   sort: number,
   page: number,
   limit: number
@@ -45,8 +44,8 @@ export const deleteOrder = (id: number) =>
     })
   );
 
-export const addSellers = (data: any) => repo(() => sellers.insertMany(data));
+export const addSellers = (data: ISeller[]) => repo(() => sellers.insertMany(data));
 
-export const addProducts = (data: any) => repo(() => products.insertMany(data));
+export const addProducts = (data: IProduct[]) => repo(() => products.insertMany(data));
 
-export const addOrders = (data: any) => repo(() => orders.insertMany(data));
+export const addOrders = (data: IOrder[]) => repo(() => orders.insertMany(data));

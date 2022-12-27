@@ -3,52 +3,29 @@ import {
   MiddleWare,
   middlewareErrorLabel,
   unknownServerError,
-  validationError,
 } from "../utils";
 import multer from "multer";
-import { CloudinaryStorage } from "multer-storage-cloudinary";
-import { v2 as cloudinary } from "cloudinary";
-import { InitFileUploadSchema } from "../schemas";
-import slugify from "slugify";
-import { DateTime } from "luxon";
+import { v2 } from "cloudinary";
+import config from "../config";
 
-const generateRandomDigits = (num = 6) => {
-  return Math.random().toFixed(num).slice(2);
-};
-
-const generateKey = (fileName: string) => {
-  return `${DateTime.now().toMillis()}-${generateRandomDigits()}-${slugify(
-    fileName,
-    "_"
-  )}`;
-};
+v2.config({
+  cloud_name: config.CLOUD_NAME,
+  api_key: config.API_KEY,
+  api_secret: config.API_SECRET,
+});
 
 export const uploader: MiddleWare = (req, res, next) => {
-  const { error, value } = InitFileUploadSchema.validate({
-    type: req.params.type || "document",
-  });
-
-  if (error || !value)
-    return res.status(400).send({ message: error?.message ?? validationError });
-
   try {
     let multerUploader: multer.Multer | null = null;
-
     multerUploader = multer({
-      storage: new CloudinaryStorage({
-        cloudinary: cloudinary,
-        params: {
-          public_id: (req, file) => {
-            return generateKey(file.originalname);
-          },
-        },
-      }),
+      storage: multer.memoryStorage(),
     });
 
     if (multerUploader) return multerUploader.single("file")(req, res, next);
     else return res.status(400).send({ message: invalidUploadServer });
   } catch (e) {
     console.error(middlewareErrorLabel, e);
+    console.log(e);
     return res.status(500).send({ message: unknownServerError });
   }
 };

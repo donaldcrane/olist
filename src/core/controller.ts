@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { ControllerParams, response, ServiceParams } from "../utils";
+import { ControllerParams, ISeller, response, ServiceParams } from "../utils";
 
 export const controller = async <T = unknown, R = unknown, F = unknown>({
   res,
@@ -20,7 +20,7 @@ export const controller = async <T = unknown, R = unknown, F = unknown>({
     file: req.file as Express.Multer.File,
   };
 
-  if (req.user) params.user = req.user;
+  if (req.user) params.user = req.user as ISeller;
 
   params.pagination = {
     page: Number((params.filters as { [key: string]: string })?.page ?? 0),
